@@ -17,3 +17,11 @@
 const Route = use('Route')
 
 Route.on('/').render('welcome')
+
+Route.group(() => {
+  Route.get('/', 'UsuarioController.index')
+  Route.get('/:id', 'UsuarioController.show')
+  Route.put('/:id', 'UsuarioController.update')
+  Route.delete('/:id', 'UsuarioController.destroy')
+  Route.post('/', 'UsuarioController.store')
+}).prefix('/usuarios')
