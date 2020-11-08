@@ -5,6 +5,7 @@
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 const Database = use('Database')
+const Usuarios = use('App/Models/Usuario')
 
 /**
  * Resourceful controller for interacting with usuarios
@@ -40,11 +41,20 @@ class UsuarioController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
-    const usuarios_dados = request.only(['nome', 'email', 'senha', 'nivel_acesso', 'celular', 'cpf'])
-    
+    const usuario = new Usuarios()
+    const data = request.only(['nome', 'email', 'senha', 'nivel_acesso', 'celular', 'cpf'])
+
+    usuario.nome = data.nome
+    usuario.email = data.email
+    usuario.senha = data.senha
+    usuario.nivel_acesso = data.nivel_acesso
+    usuario.celular = data.celular
+    usuario.cpf = data.cpf
+
     try {
-      const id_new_user = await Database.table('usuarios').insert(usuarios_dados)
-      const new_user = await Database.table('usuarios').where('id', id_new_user).first()
+      await usuario.save()
+      const new_user = await Usuarios.last()
+      new_user.senha = undefined
       return response.json(new_user)
     } catch (error) {
       console.log(error)
@@ -127,6 +137,17 @@ class UsuarioController {
     }
 
   }
+
+  async login ({ auth, request, response }) {
+    const { email, senha } = request.all()
+    try {
+      const user = await auth.attempt(email, senha)
+      return response.json(user)
+    } catch (error) {
+      return response.status(401).send('Unauthorized')
+    }
+  }
+
 }
 
 module.exports = UsuarioController
