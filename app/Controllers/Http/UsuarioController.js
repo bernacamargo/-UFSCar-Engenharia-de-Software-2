@@ -17,9 +17,8 @@ class UsuarioController {
    * @param {object} ctx
    * @param {Request} ctx.request
    * @param {Response} ctx.response
-   * @param {View} ctx.view
    */
-  async index ({ request, response, view }) {
+  async index ({ request, response }) {
 
     try {
       const usuarios =  await Database.table('usuarios')
@@ -42,12 +41,11 @@ class UsuarioController {
    */
   async store ({ request, response }) {
     const usuarios_dados = request.only(['nome', 'email', 'senha', 'nivel_acesso', 'celular', 'cpf'])
-    console.log(usuarios_dados)
+    
     try {
-      const created_user = await Database.table('usuarios').insert(usuarios_dados)
-
-      return response.json(created_user)
-
+      const id_new_user = await Database.table('usuarios').insert(usuarios_dados)
+      const new_user = await Database.table('usuarios').where('id', id_new_user).first()
+      return response.json(new_user)
     } catch (error) {
       console.log(error)
       return response.status(400).send(error)
@@ -62,13 +60,11 @@ class UsuarioController {
    * @param {object} ctx
    * @param {Request} ctx.request
    * @param {Response} ctx.response
-   * @param {View} ctx.view
    */
-  async show ({ params, request, response, view }) {
+  async show ({ params, request, response }) {
     const id = params.id
 
     try {
-      
       const usuario = await Database.table('usuarios').where('id', id).first()
 
       if(usuario){
