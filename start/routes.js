@@ -26,6 +26,7 @@ Route.group(() => {
   Route.post('/', 'UsuarioController.store')
 }).prefix('/usuarios')
 
+Route.post('/auth', 'UsuarioController.login')
 
 Route.group(() => {
   Route.get('/', 'ProdutoController.index')
@@ -33,5 +34,5 @@ Route.group(() => {
   Route.put('/:id', 'ProdutoController.update')
   Route.delete('/:id', 'ProdutoController.destroy')
   Route.post('/', 'ProdutoController.store')
-}).prefix('/produtos')
+}).prefix('/produtos').middleware('auth')
 
