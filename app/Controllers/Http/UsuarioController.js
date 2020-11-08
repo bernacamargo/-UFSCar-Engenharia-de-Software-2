@@ -141,8 +141,11 @@ class UsuarioController {
   async login ({ auth, request, response }) {
     const { email, senha } = request.all()
     try {
-      const user = await auth.attempt(email, senha)
-      return response.json(user)
+      const jwt_token = await auth.attempt(email, senha)
+      const user = await Usuarios.findBy('email', email)
+      user.senha = undefined
+      jwt_token.user = user
+      return response.json(jwt_token)
     } catch (error) {
       return response.status(401).send('Unauthorized')
     }
