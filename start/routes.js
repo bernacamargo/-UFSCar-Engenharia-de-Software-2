@@ -25,3 +25,13 @@ Route.group(() => {
   Route.delete('/:id', 'UsuarioController.destroy')
   Route.post('/', 'UsuarioController.store')
 }).prefix('/usuarios')
+
+
+Route.group(() => {
+  Route.get('/', 'ProdutoController.index')
+  Route.get('/:id', 'ProdutoController.show')
+  Route.put('/:id', 'ProdutoController.update')
+  Route.delete('/:id', 'ProdutoController.destroy')
+  Route.post('/', 'ProdutoController.store')
+}).prefix('/produtos')
+
