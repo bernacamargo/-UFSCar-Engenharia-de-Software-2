@@ -147,6 +147,7 @@ class UsuarioController {
       jwt_token.user = user
       return response.json(jwt_token)
     } catch (error) {
+      console.log(error)
       return response.status(401).send('Unauthorized')
     }
   }
