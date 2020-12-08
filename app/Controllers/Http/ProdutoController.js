@@ -29,7 +29,6 @@ class ProdutoController {
       console.log(error)
       return response.status(400).send(error)
     }
-
   }
 
   /**
@@ -135,26 +134,37 @@ class ProdutoController {
   }
 
   async getByFiltros ({request, response}) {
-    const id_categoria = request.only('id_categoria') //required
-    const nome = request.only('nome') //required
-    const ordenacao = request.only('ordenacao') //required
-    const ordenacao_direcao = request.only('ordenacao_direcao')
+    
+    let id_categoria = request.body['id_categoria'] //required
+    let nome = request.body['nome'] //required
+    let ordenacao = request.body['ordenacao'] 
+    let ordenacao_direcao = request.body['ordenacao_direcao']
 
     if(!ordenacao_direcao)
       ordenacao_direcao = 'desc'
       
+    if(!ordenacao)
+      ordenacao = 'id'
+
+    // console.log(id_categoria, nome, ordenacao, ordenacao_direcao)
+
     try {
       const produtos = Database.table('produtos')
 
       if(id_categoria)
         produtos.where('id_categoria', id_categoria)
-
-      if(nome)
-        produtos.orWhere('nome', 'like', `%${nome}%`)
       
-      await produtos.orderBy(ordenacao, ordenacao_direcao)
 
-      return response.json(produtos)
+      if(nome !== null)
+        produtos.where('nome', 'like', `%${nome}%`)
+      
+      
+      produtos.orderBy(ordenacao, ordenacao_direcao)
+
+      const results = await produtos
+      // console.log(results)
+      return response.json(results)
+
     } catch (error) {
       console.log(error)
       return response.status(400).send(error)
