@@ -37,3 +37,12 @@ Route.group(() => {
 }).prefix('/produtos')
 //.middleware('auth')
 
+
+Route.group(() => {
+  Route.get('/', 'CategoriaController.index')
+  Route.get('/:id', 'CategoriaController.show')
+  Route.put('/:id', 'CategoriaController.update')
+  Route.delete('/:id', 'CategoriaController.destroy')
+  Route.post('/', 'CategoriaController.store')
+}).prefix('categorias')
+
