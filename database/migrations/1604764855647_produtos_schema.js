@@ -9,7 +9,7 @@ class ProdutosSchema extends Schema {
       table.increments()
       table.string('nome', 250).notNullable()
       table.string('descricao', 500).notNullable()
-      table.float('preco', 2).notNullable()
+      table.float('preco').notNullable()
       table.integer('estoque').notNullable()
       table.timestamps()
     })
