@@ -36,6 +36,15 @@ Route.group(() => {
   Route.post('/', 'ProdutoController.store')
   Route.post('/filtros', 'ProdutoController.getByFiltros')
 }).prefix('/produtos')
+
+Route.group(() => {
+  Route.get('/', 'PedidoController.index')
+  Route.get('/:id', 'PedidoController.show')
+  Route.put('/:id', 'PedidoController.update')
+  Route.delete('/:id', 'PedidoController.destroy')
+  Route.post('/', 'PedidoController.store')
+  Route.post('/status', 'PedidoController.atualizaStatus')
+}).prefix('/pedidos')
 //.middleware('auth')
 
 
